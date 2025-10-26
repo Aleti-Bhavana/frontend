@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import axios from "axios";
+import StudentList from "./components/StudentList";
+import StudentForm from "./components/StudentForm";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = { students: [] };
+
+  componentDidMount() {
+    this.fetchStudents();
+  }
+
+  fetchStudents = async () => {
+    const res = await axios.get("http://localhost:5000/api/students");
+    this.setState({ students: res.data });
+  };
+
+  addStudent = async (student) => {
+    await axios.post("http://localhost:5000/api/students", student);
+    this.fetchStudents();
+  };
+
+  deleteStudent = async (id) => {
+    await axios.delete(`http://localhost:5000/api/students/${id}`);
+    this.fetchStudents();
+  };
+
+  render() {
+    return (
+      <div style={{ width: "600px", margin: "auto", padding: "20px" }}>
+        <h1>🎓 Student Management</h1>
+        <StudentForm addStudent={this.addStudent} />
+        <StudentList
+          students={this.state.students}
+          deleteStudent={this.deleteStudent}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;

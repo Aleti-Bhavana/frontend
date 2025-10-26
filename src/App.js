@@ -16,12 +16,12 @@ class App extends Component {
   };
 
   addStudent = async (student) => {
-    await axios.post("http://localhost:5000/api/students", student);
+    await axios.post("https://myfavaouriteone.onrender.com/api/students", student);
     this.fetchStudents();
   };
 
   deleteStudent = async (id) => {
-    await axios.delete(`http://localhost:5000/api/students/${id}`);
+    await axios.delete(`https://myfavaouriteone.onrender.com/api/students/${id}`);
     this.fetchStudents();
   };
 
